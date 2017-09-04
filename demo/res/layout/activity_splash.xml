@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
+    android:background="#242729"
     android:layout_gravity="center"
     android:id="@+id/lin_lay"
     android:gravity="center"
@@ -9,10 +10,10 @@
     android:weightSum="1">
 
     <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/logo"
-        android:background="@drawable/ic_launcher"
-        android:layout_weight="0.51" />
+        android:layout_width="402dp"
+        android:layout_height="624dp"
+        android:id="@+id/splash"
+        android:background="@drawable/ndroidbackgroud"
+        android:layout_weight="0.25" />
 
 </LinearLayout>
