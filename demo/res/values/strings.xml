@@ -17,4 +17,6 @@
     <string name="button_radius">Radius</string>
     <string name="button_gradient">Gradient</string>
     <string name="button_opacity">Opacity</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
 </resources>
