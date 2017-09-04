@@ -47,6 +47,8 @@
         </activity>
         <activity android:name=".Register" />
         <activity android:name=".Login"></activity>
+        <activity android:name=".Billboard1"></activity>
+        <activity android:name=".Billboard2"></activity>
     </application>
 
 </manifest>
