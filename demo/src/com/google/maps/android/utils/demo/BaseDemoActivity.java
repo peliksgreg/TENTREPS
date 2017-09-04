@@ -177,7 +177,7 @@ public abstract class BaseDemoActivity extends FragmentActivity implements OnMap
                             @Override
                             public void run() {
 
-                                Intent i=new Intent(BaseDemoActivity.this,Billboard1.class);
+                                Intent i=new Intent(BaseDemoActivity.this,Billboard2.class);
                                 startActivity(i);
                             }
                         }, 5000);
