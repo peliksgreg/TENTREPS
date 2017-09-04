@@ -25,9 +25,12 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
+import android.widget.Toast;
 
 import com.firebase.geofire.GeoFire;
 import com.firebase.geofire.GeoLocation;
+import com.firebase.geofire.GeoQuery;
+import com.firebase.geofire.GeoQueryEventListener;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationRequest;
@@ -40,6 +43,7 @@ import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -52,7 +56,7 @@ public abstract class BaseDemoActivity extends FragmentActivity implements OnMap
     Location mLastLocation;
     Marker mCurrLocationMarker;
     LocationRequest mLocationRequest;
-
+    LatLng currLocation;
 
     protected int getLayoutId() {
         return R.layout.map;
@@ -125,10 +129,61 @@ public abstract class BaseDemoActivity extends FragmentActivity implements OnMap
         }
 
         String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("players_locaion");
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("players_location");
+
+        currLocation = new LatLng(mLastLocation.getLatitude(),mLastLocation.getLongitude());
 
         GeoFire geoFire = new GeoFire(ref);
         geoFire.setLocation(userId, new GeoLocation(location.getLatitude(),location.getLongitude()));
+
+        getNearestBillboard();
+    }
+    private  int radius=1;
+    private Boolean billboardFound = false;
+    private String billboardFoundID;
+
+    private void getNearestBillboard() {
+        DatabaseReference billboardLocation = FirebaseDatabase.getInstance().getReference().child("billboards");
+        GeoFire geoFire = new GeoFire(billboardLocation);
+
+
+        GeoQuery geoQuery = geoFire.queryAtLocation(new GeoLocation(currLocation.latitude,currLocation.longitude),radius);
+        geoQuery.removeAllListeners();
+
+        geoQuery.addGeoQueryEventListener(new GeoQueryEventListener() {
+            @Override
+            public void onKeyEntered(String key, GeoLocation location) {
+                if(!billboardFound){
+                    billboardFound = true;
+                    billboardFoundID = key;
+                    Toast.makeText(BaseDemoActivity.this, "FIND YOU "+key, Toast.LENGTH_SHORT).show();
+            }
+
+            }
+
+            @Override
+            public void onKeyExited(String key) {
+
+            }
+
+            @Override
+            public void onKeyMoved(String key, GeoLocation location) {
+
+            }
+
+            @Override
+            public void onGeoQueryReady() {
+                if(!billboardFound){
+                    Toast.makeText(BaseDemoActivity.this, "No billboards Nearby", Toast.LENGTH_SHORT).show();
+                    getNearestBillboard();
+                }
+            }
+
+            @Override
+            public void onGeoQueryError(DatabaseError error) {
+
+            }
+        });
     }
 
     @Override
@@ -161,10 +216,10 @@ public abstract class BaseDemoActivity extends FragmentActivity implements OnMap
         super.onStop();
 
         String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("players_locaion");
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("players_location");
 
         GeoFire geoFire = new GeoFire(ref);
-        geoFire.removeLocation(userId);
+       geoFire.removeLocation(userId);
 
     }
 
