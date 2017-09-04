@@ -160,16 +160,28 @@ public abstract class BaseDemoActivity extends FragmentActivity implements OnMap
                     billboardFoundID = key;
                     Toast.makeText(BaseDemoActivity.this, "FOUND YOU "+key, Toast.LENGTH_SHORT).show();
 
+                    if (billboardFoundID =="9xvA24DYP1TEaDqq0rWpBQuf89k2"){
+                        new Handler().postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
 
-                    new Handler().postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
+                                Intent i=new Intent(BaseDemoActivity.this,Billboard1.class);
+                                startActivity(i);
+                            }
+                        }, 5000);
+                    }
 
-                            Intent i=new Intent(BaseDemoActivity.this,Billboard1.class);
-                            startActivity(i);
-                        }
-                    }, 5000);
 
+                        else {
+                        new Handler().postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+
+                                Intent i=new Intent(BaseDemoActivity.this,Billboard1.class);
+                                startActivity(i);
+                            }
+                        }, 5000);
+                    }
             }
 
             }
