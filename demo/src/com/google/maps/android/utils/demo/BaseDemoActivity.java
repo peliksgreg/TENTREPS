@@ -160,7 +160,7 @@ public abstract class BaseDemoActivity extends FragmentActivity implements OnMap
                     billboardFoundID = key;
                     Toast.makeText(BaseDemoActivity.this, "FOUND YOU "+key, Toast.LENGTH_SHORT).show();
 
-                    if (billboardFoundID =="9xvA24DYP1TEaDqq0rWpBQuf89k2"){
+                    if (billboardFoundID.equals("9xvA24DYP1TEaDqq0rWpBQuf89k2")){
                         new Handler().postDelayed(new Runnable() {
                             @Override
                             public void run() {
@@ -200,6 +200,7 @@ public abstract class BaseDemoActivity extends FragmentActivity implements OnMap
             public void onGeoQueryReady() {
                 if(!billboardFound){
                     Toast.makeText(BaseDemoActivity.this, "No billboards Nearby", Toast.LENGTH_SHORT).show();
+                    radius++;
                     getNearestBillboard();
                 }
             }
