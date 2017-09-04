@@ -155,33 +155,23 @@ public abstract class BaseDemoActivity extends FragmentActivity implements OnMap
         geoQuery.addGeoQueryEventListener(new GeoQueryEventListener() {
             @Override
             public void onKeyEntered(String key, GeoLocation location) {
-                if(!billboardFound) {
+                if(!billboardFound){
                     billboardFound = true;
                     billboardFoundID = key;
-                    Toast.makeText(BaseDemoActivity.this, "FOUND YOU " + key, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(BaseDemoActivity.this, "FOUND YOU "+key, Toast.LENGTH_SHORT).show();
 
-                    if (billboardFoundID.equals("9xvA24DYP1TEaDqq0rWpBQuf89k2")) {
-                        new Handler().postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
 
-                                Intent i = new Intent(BaseDemoActivity.this, Billboard1.class);
-                                startActivity(i);
-                            }
-                        }, 5000);
-                    } else {
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
 
-                        new Handler().postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
+                            Intent i=new Intent(BaseDemoActivity.this,Billboard1.class);
+                            startActivity(i);
+                        }
+                    }, 5000);
 
-                                Intent i = new Intent(BaseDemoActivity.this, Billboard2.class);
-                                startActivity(i);
-                            }
-                        }, 5000);
+            }
 
-                    }
-                }
             }
 
             @Override
