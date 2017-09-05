@@ -1,22 +1,9 @@
 package com.google.maps.android.utils.demo;
 
-import android.app.Activity;
 import android.content.Intent;
-import android.graphics.PixelFormat;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
-import android.view.Window;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-
-import com.google.maps.android.utils.demo.MainActivity;
-import com.google.maps.android.utils.demo.R;
-
-import java.util.Random;
 
 
 public class Splash extends AppCompatActivity {
