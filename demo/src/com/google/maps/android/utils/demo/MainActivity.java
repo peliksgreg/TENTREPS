@@ -1,186 +1,56 @@
+/*
+ * Copyright 2013 Google Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.google.maps.android.utils.demo;
+
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v4.view.ViewGroupCompat;
-import android.view.View;
-import android.support.design.widget.NavigationView;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.TextView;
 
-import com.google.android.gms.auth.api.Auth;
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.ResultCallback;
-import com.google.android.gms.common.api.Status;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 
-import java.io.InputStream;
-
-public class MainActivity extends AppCompatActivity {
-
+public class MainActivity extends Activity implements View.OnClickListener {
     private FirebaseAuth mAuth;
-    private FirebaseAuth.AuthStateListener mAuthListener;
-    private GoogleApiClient mGoogleApiClient;
-    private Button btn1, btn2, btn3, btn4;
+    private ViewGroup mListView;
 
+    //Comment to see if I can push to the repository
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-
+        setContentView(R.layout.activity_splash);
 
         mAuth = FirebaseAuth.getInstance();
-        final FirebaseUser currentUser = mAuth.getCurrentUser();
+        //mListView = (ViewGroup) findViewById(R.id.list);
 
-        //Navigation header main
-        final ImageView imageView = (ImageView) findViewById(R.id.userImage);
-        final TextView name = (TextView) findViewById(R.id.name);
-        final TextView email = (TextView) findViewById(R.id.email);
-        final Button btn1 = (Button) findViewById(R.id.btn1);
-        final Button btn2 = (Button) findViewById(R.id.btn2);
-        final Button btn3 = (Button) findViewById(R.id.btn3);
-        final Button btn4 = (Button) findViewById(R.id.btn4);
+        addDemo("Clustering", ClusteringDemoActivity.class);
+        addDemo("Clustering: Custom Look", CustomMarkerClusteringDemoActivity.class);
 
-        btn1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, Help.class);
-                startActivity(intent);
-
-            }
-        });
-
-        btn2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, Register.class);
-                startActivity(intent);
-            }
-        });
-
-        btn3.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, SelectBillboard.class);
-                startActivity(intent);
-            }
-        });
-
-        btn4.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                signOutAccount();
-            }
-        });
-
-        mAuthListener = new FirebaseAuth.AuthStateListener() {
-            @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-
-                if(firebaseAuth.getCurrentUser() != null){
-                    startActivity(new Intent(MainActivity.this, Login.class));
-                }
-
-                if (currentUser != null){
-                    email.setText(currentUser.getEmail());
-                    name.setText(currentUser.getDisplayName());
-                    if (currentUser.getPhotoUrl() != null){
-                        displayImage(currentUser.getPhotoUrl());
-                    }
-                } else {
-                    email.setText("");
-                    imageView.setImageResource(R.drawable.common_google_signin_btn_icon_dark);
-                }
-            }
-        };
-    }
-
-    void displayImage(Uri imageUrl){
-        new DownloadImageTask((ImageView) findViewById(R.id.userImage)).execute(imageUrl.toString());
-    }
-
-    private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
-        ImageView bmImage;
-
-        public DownloadImageTask(ImageView bmImage){
-            this.bmImage = bmImage;
-        }
-
-        protected Bitmap doInBackground(String... urls){
-            String urldisplay = urls[0];
-            Bitmap bitmap = null;
-            try {
-                InputStream in = new java.net.URL(urldisplay).openStream();
-                bitmap = BitmapFactory.decodeStream(in);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            return bitmap;
-        }
-
-        protected void onPostExecute(Bitmap result) {
-            bmImage.setImageBitmap(result);
-        }
-    }
-
-   /*  @Override
-   public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
-        } else {
-            super.onBackPressed();
-        }
-    } */
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
     }
 
     @SuppressWarnings("StatementWithEmptyBody")
-   /* public boolean onNavigationItemSelected(MenuItem item) {
+    public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_addQuestion) {
+        if (id == R.id.nav_quizzes) {
             Intent intent = new Intent(MainActivity.this, SelectBillboard.class);
             startActivity(intent);
 
@@ -192,37 +62,30 @@ public class MainActivity extends AppCompatActivity {
             signOutAccount();
         }
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
+        //DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        //drawer.closeDrawer(GravityCompat.START);
         return true;
-    } */
+    }
 
     public void signOutAccount(){
         //Signs out email/password authentication
         mAuth.signOut();
         FirebaseAuth.getInstance().signOut();
-
-        //Signs out google account authentication
-        Auth.GoogleSignInApi.signOut(mGoogleApiClient).setResultCallback(
-                new ResultCallback<Status>() {
-                    @Override
-                    public void onResult(@NonNull Status status) {
-
-                    }
-                }
-        );
     }
 
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-
+    private void addDemo(String demoName, Class<? extends Activity> activityClass) {
+        Button b = new Button(this);
+        ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        b.setLayoutParams(layoutParams);
+        b.setText(demoName);
+        b.setTag(activityClass);
+        b.setOnClickListener(this);
+        mListView.addView(b);
     }
-
     @Override
-    protected void onStop() {
-        super.onStop();
+    public void onClick(View view) {
+        Class activityClass = (Class) view.getTag();
+        startActivity(new Intent(this, activityClass));
     }
 }
-

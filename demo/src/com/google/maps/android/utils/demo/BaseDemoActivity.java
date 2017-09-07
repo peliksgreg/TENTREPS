@@ -200,8 +200,7 @@ public abstract class BaseDemoActivity extends FragmentActivity implements OnMap
             public void onGeoQueryReady() {
                 if(!billboardFound){
                     Toast.makeText(BaseDemoActivity.this, "No billboards Nearby", Toast.LENGTH_SHORT).show();
-                    radius++;
-                    getNearestBillboard();
+                   //getNearestBillboard();
                 }
             }
 

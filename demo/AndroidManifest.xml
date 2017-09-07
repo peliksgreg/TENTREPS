@@ -48,9 +48,6 @@
         <activity android:name=".Login" />
         <activity android:name=".Billboard1" />
         <activity android:name=".Billboard2" />
-        <activity
-            android:name=".MainActivity"
-            android:label="@string/title_activity_main" />
         <activity android:name=".Help"></activity>
     </application>
 
