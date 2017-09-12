@@ -7,6 +7,10 @@
             android:id="@+id/nav_quizzes"
             android:icon="@drawable/ic_action_add_question"
             android:title="Quizzes" />
+        <item
+            android:id="@+id/nav_help"
+            android:icon="@drawable/ic_help"
+            android:title="Instructions" />
     </group>
 
     <item android:title="Account">

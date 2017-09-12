@@ -24,9 +24,14 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.view.MenuItem;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.firebase.geofire.GeoFire;
@@ -50,7 +55,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 public abstract class BaseDemoActivity extends FragmentActivity implements OnMapReadyCallback,
-        GoogleApiClient.ConnectionCallbacks,GoogleApiClient.OnConnectionFailedListener, com.google.android.gms.location.LocationListener {
+        GoogleApiClient.ConnectionCallbacks,GoogleApiClient.OnConnectionFailedListener, com.google.android.gms.location.LocationListener, NavigationView.OnNavigationItemSelectedListener {
 
 
     private GoogleMap mMap;
@@ -59,6 +64,8 @@ public abstract class BaseDemoActivity extends FragmentActivity implements OnMap
     Marker mCurrLocationMarker;
     LocationRequest mLocationRequest;
     LatLng currLocation;
+    private FirebaseAuth mAuth;
+    private Button btn1;
 
     protected int getLayoutId() {
         return R.layout.map;
@@ -69,6 +76,8 @@ public abstract class BaseDemoActivity extends FragmentActivity implements OnMap
         super.onCreate(savedInstanceState);
         setContentView(getLayoutId());
         setUpMap();
+        mAuth = FirebaseAuth.getInstance();
+
     }
 
     @Override
@@ -96,6 +105,8 @@ public abstract class BaseDemoActivity extends FragmentActivity implements OnMap
         }
         startDemo();
     }
+
+
 
     protected synchronized void buildGoogleApiClient() {
         mGoogleApiClient = new GoogleApiClient.Builder(this)
@@ -282,6 +293,38 @@ public abstract class BaseDemoActivity extends FragmentActivity implements OnMap
     }
     private void setUpMap() {
         ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.mapFragment)).getMapAsync(this);
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(MenuItem item) {
+        // Handle navigation view item clicks here.
+        int id = item.getItemId();
+
+        if (id == R.id.nav_quizzes) {
+            Intent intent = new Intent(BaseDemoActivity.this, SelectBillboard.class);
+            startActivity(intent);
+
+        }  else if (id == R.id.nav_settings) {
+            //sample intent
+            Intent intent = new Intent(BaseDemoActivity.this, Register.class);
+            startActivity(intent);
+
+        } else if (id == R.id.nav_logout) {
+            signOutAccount();
+        } else if(id == R.id.nav_help){
+            Intent intent = new Intent(BaseDemoActivity.this, Help.class);
+            startActivity(intent);
+        }
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
+        return true;
+    }
+
+    public void signOutAccount(){
+        //Signs out email/password authentication
+        mAuth.signOut();
+        FirebaseAuth.getInstance().signOut();
     }
 
     /**

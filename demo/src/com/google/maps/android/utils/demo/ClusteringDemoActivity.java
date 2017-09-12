@@ -31,7 +31,7 @@ import java.util.List;
 /**
  * Simple activity demonstrating ClusterManager.
  */
-public class ClusteringDemoActivity extends BaseDemoActivity {
+public class ClusteringDemoActivity extends BaseDemoActivity{
 
 
     private ClusterManager<MyItem> mClusterManager;

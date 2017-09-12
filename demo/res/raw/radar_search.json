@@ -1,9 +1,7 @@
 [
-  { "lat" : 14.545942028614721, "lng" : 121.02190859222412,"title" : "Goldilocks Heart Shape Mamon" },
-  { "lat" : 14.545609710284463, "lng" : 121.0263717880249, "title" : "Tronix Imaging Family Photo"},
-  { "lat" : 14.549099027806761, "lng" : 121.02997667694092,  "title" : "MCDO McSaver Meals"},
-  { "lat" : 14.552671367182711, "lng" : 121.0340965499878, "title" : "Liza Soberano Cadbury Chocolate"},
-  { "lat" : 14.556575951059756, "lng" : 121.03838808441162, "title" : " CARS 3" },
-  { "lat" : 14.552297520421755, "lng" : 121.03310949707031, "title" : "GMA: Alyas Robin Hood" }
+  { "lat" : 14.5313597, "lng" : 121.0213944,"title" : "Goldilocks\"Liza Soberano\" " },
+  { "lat" : 14.3992626, "lng" : 121.0452155, "title" : "Vans's New Shoes"},
+  { "lat" : 14.4482, "lng" : 121.0356937,  "title" : "Goldilocks\"Liza Soberano\" "}
+
 
 ]
